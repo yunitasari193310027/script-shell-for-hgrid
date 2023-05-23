@@ -74,7 +74,7 @@ SPARK_COMMAND=/opt/spark/bin/spark-submit
     cat ${mv_log3} |awk -F"|" '{print $(NF-1)}' |awk '{gsub(";","\n")}1' >> ${HGRID_LOG}
 	echo "Proses Selesai pada:" `date`
 ###### REMOVE FORMAT HSPARK
-	rm $OUTPUT_1
+	rm -r $OUTPUT_1
 	rm $LOCKFILE 
 	rm $mv_log1
 	rm $mv_log2	
