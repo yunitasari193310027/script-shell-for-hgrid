@@ -46,29 +46,32 @@ SPARK_COMMAND=/opt/spark/bin/spark-submit
     cat ${mv_log} |awk -F"|" '{print $(NF-1)}' |awk '{gsub(";","\n")}1' >> ${HGRID_LOG}
 	
 	echo "Proses Selesai pada:" `date`
-###### REMOVE FOLDER/FILE 
-	rm -r $OUTPUT_1
-	rm $LOCKFILE 
-	rm $mv_log
 
 ############################## LOAD OUTPUT TO DATABASE ####################################
+	
+	cat $OUTPUT_1/h* > OUTPUT_1.csv
 mysql -uhdoop -p1q2q3q4q -Dfull <<EOF
 
-	load data local infile '/home/hdoop/RevenueSA_HLR.csv' into table Revenue_SA_HLR fields 
+	load data local infile '/home/hdoop/OUTPUT_1.csv' into table Revenue_SA_HLR fields 
     terminated by '|' 
     enclosed by '"' 
     lines terminated by '\n' 
     (trx_year,trx_month,trx_date,brand,l3_cd,area_hlr,region_hlr,city_hlr,l1_name,l2_name,l3_name,tot_user,tot_dur,tot_rev,tot_trx,event_date,source_name);
 EOF
-
-	cat /home/hdoop/RevenueSA_VLR/h* > RevenueSA_VLR.csv
-
+	
+	cat $OUTPUT_2/h* > OUTPUT_2.csv
 mysql -uhdoop -p1q2q3q4q -Dfull <<EOF
 
-	load data local infile '/home/hdoop/RevenueSA_VLR.csv' into table Revenue_SA_VLR fields 
+	load data local infile '/home/hdoop/OUTPUT_2.csv' into table Revenue_SA_VLR fields 
     terminated by '|' 
     enclosed by '"' 
     lines terminated by '\n' 
     (file_date,area,region,cluster,brand,l1_name,l2_name,l3_name,offer_name,tot_rev,tot_trx,tot_dur,node,cust_type,cust_subtype,cust_subsegment,event_date,source_name);
-EOF	
+EOF
+###### REMOVE FOLDER/FILE 
+	rm -r $OUTPUT_1
+	rm $LOCKFILE 
+	rm $mv_log
+	rm OUTPUT_1.csv
+	rm OUTPUT_2.csv	
 fi
