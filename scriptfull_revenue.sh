@@ -50,8 +50,8 @@ SPARK_COMMAND=/opt/spark/bin/spark-submit
 ############################## LOAD OUTPUT TO DATABASE ####################################
 	
 	cat $OUTPUT_1/h* > OUTPUT_1.csv
-mysql -uhdoop -p1q2q3q4q -Dfull <<EOF
-
+mysql -uyunita -p1q2q3q4q -Dfull <<EOF
+	CREATE TABLE IF NOT EXISTS Revenue_SA_HLR(trx_year varchar(100),trx_month varchar(100),trx_date varchar(100),brand varchar(100),l3_cd varchar(100),area_hlr varchar(100),region_hlr varchar(100),city_hlr varchar(100),l1_name varchar(100),l2_name varchar(100),l3_name varchar(100),tot_user varchar(100),tot_dur varchar(100),tot_rev varchar(100),tot_trx varchar(100),event_date varchar(100),source_name varchar(100));
 	load data local infile '/home/hdoop/OUTPUT_1.csv' into table Revenue_SA_HLR fields 
     terminated by '|' 
     enclosed by '"' 
@@ -60,8 +60,8 @@ mysql -uhdoop -p1q2q3q4q -Dfull <<EOF
 EOF
 	
 	cat $OUTPUT_2/h* > OUTPUT_2.csv
-mysql -uhdoop -p1q2q3q4q -Dfull <<EOF
-
+mysql -uyunita -p1q2q3q4q -Dfull <<EOF
+	CREATE TABLE IF NOT EXISTS Revenue_SA_VLR(file_date varchar(100),area varchar(100),region varchar(100),cluster varchar(100),brand varchar(100),l1_name varchar(100),l2_name varchar(100),l3_name varchar(100),offer_name varchar(100),tot_rev varchar(100),tot_trx varchar(100),tot_dur varchar(100),node varchar(100),cust_type varchar(100),cust_subtype varchar(100),cust_subsegment varchar(100),event_date varchar(100),source_name varchar(100));
 	load data local infile '/home/hdoop/OUTPUT_2.csv' into table Revenue_SA_VLR fields 
     terminated by '|' 
     enclosed by '"' 
